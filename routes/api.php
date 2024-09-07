@@ -14,5 +14,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('login', 'App\Http\Controllers\AuthController@login');
-Route::get('titles', 'App\Http\Controllers\MovieController@getTitles');
+Route::prefix('v1')->group(function () {
+    Route::get('titles', 'App\Http\Controllers\MovieController@getTitles');
+});
+
+Route::group(
+    [
+    'middleware' => 'api',
+    'prefix' => 'auth' ],
+    function () {
+        Route::post('login', 'App\Http\Controllers\AuthController@login')->name('login');
+    }
+);
+
+Route::get('need_login', function () {
+    return response()->json('Unauthorized', 401);
+})->name('need_login');

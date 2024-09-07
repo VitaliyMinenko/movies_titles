@@ -3,6 +3,11 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -46,5 +51,17 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    /**
+     * Convert an authentication exception into a response.
+     *
+     * @param Request $request
+     * @param AuthenticationException $exception
+     * @return JsonResponse|Response|RedirectResponse
+     */
+    protected function unauthenticated($request, AuthenticationException $exception): JsonResponse|Response|RedirectResponse
+    {
+        return redirect()->guest(route('need_login'));
     }
 }

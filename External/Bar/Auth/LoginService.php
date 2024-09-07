@@ -9,8 +9,7 @@ class LoginService
      */
     public function login(string $login, string $password): bool
     {
-        if (preg_match("/^BAR_.*/", $login, $matches))
-        {
+        if (preg_match("/^BAR_.*/", $login, $matches)) {
             return $password === "foo-bar-baz";
         }
 
